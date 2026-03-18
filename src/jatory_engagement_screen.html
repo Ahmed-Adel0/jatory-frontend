@@ -1,0 +1,641 @@
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080808;--surface:#0F0F0F;--surface2:#141414;--surface3:#1C1C1C;
+  --border:#ffffff0f;--border2:#ffffff18;--border3:#ffffff28;
+  --text:#F5F5F2;--text2:#888880;--text3:#444440;
+  --teal:#1D9E75;--teal-l:#22C990;--teal-dim:#1D9E7515;--teal-b:#1D9E7540;
+  --amber:#E8A020;--amber-dim:#E8A02015;--amber-b:#E8A02040;
+  --blue:#3B82F6;--blue-dim:#3B82F615;
+  --purple:#8B5CF6;--purple-dim:#8B5CF615;
+  --red:#EF4444;--red-dim:#EF444415;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;direction:rtl;overflow-x:hidden;font-size:14px}
+.shell{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:210px;min-width:210px;background:var(--surface);border-left:0.5px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;padding-bottom:20px}
+.sb-logo{padding:18px 16px 14px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:9px}
+.sb-logo svg{width:20px;height:25px}
+.sb-logo-text{font-family:'Tajawal',sans-serif;font-size:17px;font-weight:900;color:#fff}
+.sb-nav{padding:16px 8px 0}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 12px;margin-bottom:2px;border-radius:8px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .15s}
+.sb-item:hover{background:var(--surface2);color:var(--text)}
+.sb-item.active{background:var(--teal-dim);color:var(--teal-l);border:0.5px solid var(--teal-b)}
+.sb-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.sb-badge{margin-right:auto;background:var(--teal-dim);color:var(--teal-l);font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px}
+.sb-sep{height:0.5px;background:var(--border);margin:12px 8px}
+.sb-streak{margin:auto 12px 0;padding:14px;background:var(--surface2);border-radius:10px;border:0.5px solid var(--border2)}
+.streak-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.streak-label{font-size:11px;color:var(--text3);font-weight:500}
+.streak-val{font-family:'Tajawal',sans-serif;font-size:18px;font-weight:900;color:var(--teal-l)}
+.streak-dots{display:flex;gap:4px}
+.s-dot{width:8px;height:8px;border-radius:50%;background:var(--border3)}
+.s-dot.on{background:var(--teal)}
+.s-dot.today{background:var(--teal-l);box-shadow:0 0 6px var(--teal-glow)}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.topbar{padding:13px 24px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#08080895;backdrop-filter:blur(16px);position:sticky;top:0;z-index:20}
+.tb-tabs{display:flex;gap:4px;background:var(--surface2);border-radius:9px;padding:3px}
+.tb-tab{padding:7px 16px;border-radius:7px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap}
+.tb-tab.active{background:var(--surface3);color:var(--text);box-shadow:inset 0 0 0 0.5px var(--border2)}
+.tb-tab:hover:not(.active){color:var(--text)}
+.tb-right{display:flex;align-items:center;gap:10px}
+.xp-pill{display:flex;align-items:center;gap:6px;background:var(--teal-dim);border:0.5px solid var(--teal-b);padding:6px 14px;border-radius:100px}
+.xp-pill svg{width:13px;height:13px;stroke:var(--teal-l);fill:none;stroke-width:1.5}
+.xp-num{font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;color:var(--teal-l)}
+
+/* CONTENT AREA */
+.content{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.tab-pane{display:none;flex:1}
+.tab-pane.active{display:flex;flex-direction:column;animation:fadeUp .35s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== REELS PANE ===== */
+.reels-layout{display:grid;grid-template-columns:1fr 320px;flex:1;min-height:0}
+.reels-feed{display:flex;flex-direction:column;border-left:0.5px solid var(--border);overflow-y:auto;max-height:calc(100vh - 57px)}
+.reel-player{position:relative;min-height:480px;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer}
+.reel-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0D1F18 0%,#080F0C 100%)}
+.reel-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#1D9E7520,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)}
+.reel-content{position:relative;z-index:1;text-align:center;padding:32px 24px}
+.reel-icon-wrap{width:64px;height:64px;border-radius:16px;background:var(--teal-dim);border:0.5px solid var(--teal-b);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.reel-icon-wrap svg{width:28px;height:28px;stroke:var(--teal-l);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.reel-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--teal-l);background:var(--teal-dim);border:0.5px solid var(--teal-b);padding:3px 12px;border-radius:100px;margin-bottom:10px}
+.reel-title{font-family:'Tajawal',sans-serif;font-size:20px;font-weight:900;color:#fff;line-height:1.4;margin-bottom:8px}
+.reel-sub{font-size:13px;color:var(--text2);line-height:1.7}
+.reel-play{display:inline-flex;align-items:center;gap:8px;margin-top:20px;background:var(--teal);color:#fff;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;padding:10px 22px;border-radius:9px;border:none;cursor:pointer;transition:background .2s}
+.reel-play:hover{background:var(--teal-l)}
+.reel-play svg{width:14px;height:14px;fill:#fff}
+
+.reel-actions{position:absolute;left:16px;bottom:24px;display:flex;gap:8px;z-index:2}
+.reel-act-btn{width:36px;height:36px;border-radius:9px;background:#ffffff10;border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.reel-act-btn:hover{background:#ffffff18}
+.reel-act-btn svg{width:15px;height:15px;stroke:var(--text2);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.reel-act-btn.liked svg{stroke:var(--red)}
+
+.reel-progress{height:2px;background:var(--border2)}
+.reel-progress-fill{height:100%;background:var(--teal);width:0%;transition:width .1s linear}
+
+.reel-list{padding:12px;display:flex;flex-direction:column;gap:8px}
+.reel-card{display:flex;gap:10px;padding:10px;border-radius:10px;border:0.5px solid transparent;cursor:pointer;transition:all .15s}
+.reel-card:hover{background:var(--surface2);border-color:var(--border2)}
+.reel-card.playing{background:var(--teal-dim);border-color:var(--teal-b)}
+.rc-thumb{width:56px;height:56px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px}
+.rc-info{flex:1;min-width:0}
+.rc-title{font-size:12px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:4px}
+.reel-card.playing .rc-title{color:var(--teal-l)}
+.rc-meta{display:flex;align-items:center;gap:6px}
+.rc-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px}
+.rc-dur{font-size:10px;color:var(--text3)}
+.rc-views{font-size:10px;color:var(--text3)}
+
+/* REELS SIDEBAR */
+.reels-sidebar{padding:20px;overflow-y:auto;max-height:calc(100vh - 57px)}
+.rs-section{margin-bottom:24px}
+.rs-title{font-size:11px;font-weight:700;letter-spacing:1.2px;color:var(--text3);text-transform:uppercase;margin-bottom:12px}
+.insight-card{background:var(--surface2);border:0.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px}
+.ic-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ic-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ic-icon svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ic-icon.teal{background:var(--teal-dim);color:var(--teal-l)}
+.ic-icon.amber{background:var(--amber-dim);color:var(--amber)}
+.ic-icon.blue{background:var(--blue-dim);color:var(--blue)}
+.ic-label{font-size:12px;font-weight:600;color:var(--text)}
+.ic-body{font-size:12px;color:var(--text2);line-height:1.7}
+.ic-body strong{color:var(--text);font-weight:600}
+
+/* ===== CAREERS PANE ===== */
+.careers-layout{padding:24px;flex:1;overflow-y:auto}
+.career-hero{background:var(--surface);border:0.5px solid var(--border2);border-radius:14px;padding:24px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.ch-left{}
+.ch-badge{display:inline-flex;align-items:center;gap:6px;background:var(--teal-dim);border:0.5px solid var(--teal-b);padding:4px 12px;border-radius:100px;font-size:11px;font-weight:700;color:var(--teal-l);margin-bottom:10px}
+.ch-title{font-family:'Tajawal',sans-serif;font-size:22px;font-weight:900;color:#fff;margin-bottom:4px}
+.ch-sub{font-size:13px;color:var(--text2);line-height:1.7}
+.ch-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.ch-stat{text-align:left}
+.ch-stat-num{font-family:'Tajawal',sans-serif;font-size:24px;font-weight:900;color:var(--teal-l)}
+.ch-stat-label{font-size:11px;color:var(--text3)}
+
+.career-path-label{font-size:11px;font-weight:700;letter-spacing:1.2px;color:var(--text3);text-transform:uppercase;margin-bottom:14px}
+.career-paths{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:24px}
+.cp-card{background:var(--surface);border:0.5px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.cp-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;background:radial-gradient(circle at 0% 100%,var(--teal-dim),transparent 60%)}
+.cp-card:hover{border-color:var(--teal-b);transform:translateY(-2px)}
+.cp-card:hover::before{opacity:1}
+.cp-card.featured{border-color:var(--teal-b)}
+.cp-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.cp-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cp-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.cp-icon.teal{background:var(--teal-dim);color:var(--teal-l)}
+.cp-icon.amber{background:var(--amber-dim);color:var(--amber)}
+.cp-icon.blue{background:var(--blue-dim);color:var(--blue)}
+.cp-icon.purple{background:var(--purple-dim);color:var(--purple)}
+.cp-match{font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px}
+.cp-match.high{background:var(--teal-dim);color:var(--teal-l)}
+.cp-match.mid{background:var(--amber-dim);color:var(--amber)}
+.cp-title{font-family:'Tajawal',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+.cp-sub{font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6}
+.cp-salary-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:0.5px solid var(--border)}
+.salary-label{font-size:11px;color:var(--text3)}
+.salary-val{font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;color:var(--teal-l)}
+.salary-range{font-size:11px;color:var(--text3);margin-top:1px}
+.cp-skills{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.cp-skill{font-size:10px;padding:3px 9px;border-radius:4px;background:var(--surface2);border:0.5px solid var(--border2);color:var(--text2)}
+
+/* ===== PROGRESS PANE ===== */
+.progress-layout{padding:24px;flex:1;overflow-y:auto}
+.prog-header{margin-bottom:20px}
+.prog-title{font-family:'Tajawal',sans-serif;font-size:22px;font-weight:900;color:#fff;margin-bottom:4px}
+.prog-sub{font-size:13px;color:var(--text2)}
+
+.prog-main-card{background:var(--surface);border:0.5px solid var(--border2);border-radius:16px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}
+.prog-main-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,#1D9E7510,transparent 55%);pointer-events:none}
+.ring-wrap{display:flex;align-items:center;gap:32px;flex-wrap:wrap}
+.ring-svg{flex-shrink:0}
+.ring-info{flex:1}
+.ring-title{font-family:'Tajawal',sans-serif;font-size:18px;font-weight:900;color:#fff;margin-bottom:4px}
+.ring-sub{font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.7}
+.ring-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.rs-stat{background:var(--surface2);border-radius:9px;padding:12px;border:0.5px solid var(--border)}
+.rs-stat-val{font-family:'Tajawal',sans-serif;font-size:18px;font-weight:900;color:var(--teal-l)}
+.rs-stat-label{font-size:11px;color:var(--text3);margin-top:2px}
+
+.prog-tracks{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:20px}
+.pt-card{background:var(--surface);border:0.5px solid var(--border);border-radius:13px;padding:16px}
+.pt-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.pt-title{font-size:13px;font-weight:700;color:var(--text)}
+.pt-pct{font-family:'Tajawal',sans-serif;font-size:14px;font-weight:900}
+.pt-bar-wrap{height:5px;background:var(--surface3);border-radius:3px;margin-bottom:10px;overflow:hidden}
+.pt-bar{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.pt-bar.teal{background:var(--teal)}
+.pt-bar.amber{background:var(--amber)}
+.pt-bar.blue{background:var(--blue)}
+.pt-bar.purple{background:var(--purple)}
+.pt-meta{display:flex;justify-content:space-between}
+.pt-meta-item{font-size:11px;color:var(--text3)}
+
+.timeline{display:flex;flex-direction:column;gap:0;margin-bottom:20px}
+.tl-item{display:flex;gap:16px;padding:12px 0}
+.tl-item:not(:last-child){border-bottom:0.5px solid var(--border)}
+.tl-dot-wrap{display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;padding-top:3px}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.tl-dot.done{background:var(--teal)}
+.tl-dot.active{background:var(--teal-l);box-shadow:0 0 8px var(--teal-glow)}
+.tl-dot.upcoming{background:var(--border3)}
+.tl-info{}
+.tl-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.tl-done .tl-title{color:var(--text2)}
+.tl-sub{font-size:11px;color:var(--text3)}
+.tl-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-top:5px}
+.tl-badge.done{background:var(--teal-dim);color:var(--teal-l)}
+.tl-badge.active{background:var(--amber-dim);color:var(--amber)}
+.tl-badge.upcoming{background:var(--surface3);color:var(--text3)}
+
+/* animated progress bar on load */
+.animate-bar{width:0%!important}
+</style>
+
+<div class="shell">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-logo">
+    <svg viewBox="0 0 40 50" fill="none">
+      <path d="M10 8C10 8 10 4 20 4C30 4 30 12 30 12L30 26C30 26 30 32 24 32L10 32" stroke="white" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <path d="M18 32L18 42" stroke="white" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="22" cy="44" r="5" fill="#1D9E75"/>
+    </svg>
+    <span class="sb-logo-text">جاتوري</span>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-item" onclick="setTab('roadmap',this)">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      الرئيسية
+    </div>
+    <div class="sb-item" onclick="setTab('roadmap',this)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      مساري اليوم
+    </div>
+    <div class="sb-item active" onclick="setTab('reels',this)">
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      ريلز التعلم
+      <span class="sb-badge">جديد</span>
+    </div>
+    <div class="sb-item" onclick="setTab('careers',this)">
+      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      مساري المهني
+    </div>
+    <div class="sb-item" onclick="setTab('progress',this)">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      تقدمي
+    </div>
+    <div class="sb-sep"></div>
+    <div class="sb-item">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      المرشد الذكي
+    </div>
+  </div>
+  <div class="sb-streak">
+    <div class="streak-row">
+      <span class="streak-label">السلسلة المتواصلة</span>
+      <span class="streak-val">١٢</span>
+    </div>
+    <div class="streak-dots">
+      <div class="s-dot on"></div>
+      <div class="s-dot on"></div>
+      <div class="s-dot on"></div>
+      <div class="s-dot on"></div>
+      <div class="s-dot on"></div>
+      <div class="s-dot on"></div>
+      <div class="s-dot today"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-tabs">
+      <div class="tb-tab" onclick="setTab('reels',null,this)" id="tab-btn-reels">ريلز التعلم</div>
+      <div class="tb-tab" onclick="setTab('careers',null,this)" id="tab-btn-careers">المسار المهني</div>
+      <div class="tb-tab active" onclick="setTab('progress',null,this)" id="tab-btn-progress">تقدمي البصري</div>
+    </div>
+    <div class="tb-right">
+      <div class="xp-pill">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span class="xp-num">٣٠٠ XP</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== REELS TAB ===== -->
+    <div class="tab-pane" id="tab-reels">
+      <div class="reels-layout">
+        <div class="reels-feed">
+          <div class="reel-player" onclick="playNext()">
+            <div class="reel-bg"></div>
+            <div class="reel-glow"></div>
+            <div class="reel-content">
+              <div class="reel-icon-wrap">
+                <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </div>
+              <div class="reel-tag">فسيولوجيا · ٣ دقائق</div>
+              <div class="reel-title" id="reel-main-title">كيف يضخ القلب الدم؟</div>
+              <div class="reel-sub" id="reel-main-sub">شرح مبسط للدورة الدموية الصغرى والكبرى مع رسوم متحركة — مثالي قبل امتحانك</div>
+              <button class="reel-play">
+                <svg viewBox="0 0 24 24" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3" fill="white"/></svg>
+                شاهد الآن
+              </button>
+            </div>
+            <div class="reel-actions">
+              <div class="reel-act-btn liked" id="like-btn" onclick="event.stopPropagation();toggleLike()">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+              <div class="reel-act-btn">
+                <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div class="reel-act-btn">
+                <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="reel-progress"><div class="reel-progress-fill" id="reel-bar"></div></div>
+          <div class="reel-list" id="reel-list">
+            <div class="reel-card playing" onclick="selectReel(this,'كيف يضخ القلب الدم؟','شرح مبسط للدورة الدموية مع رسوم متحركة')">
+              <div class="rc-thumb" style="background:var(--teal-dim)">🫀</div>
+              <div class="rc-info">
+                <div class="rc-title">كيف يضخ القلب الدم؟</div>
+                <div class="rc-meta"><span class="rc-tag tag-theory" style="background:var(--teal-dim);color:var(--teal-l)">فسيولوجيا</span><span class="rc-dur">٣ د</span><span class="rc-views">· ٢.١ك مشاهدة</span></div>
+              </div>
+            </div>
+            <div class="reel-card" onclick="selectReel(this,'الجهاز العصبي في ٥ دقائق','ملخص خارق لكل ما تحتاجه عن الجهاز العصبي')">
+              <div class="rc-thumb" style="background:var(--purple-dim)">🧠</div>
+              <div class="rc-info">
+                <div class="rc-title">الجهاز العصبي في ٥ دقائق</div>
+                <div class="rc-meta"><span class="rc-tag" style="background:var(--purple-dim);color:var(--purple)">تشريح</span><span class="rc-dur">٥ د</span><span class="rc-views">· ٣.٤ك مشاهدة</span></div>
+              </div>
+            </div>
+            <div class="reel-card" onclick="selectReel(this,'خطأ شائع في الباثولوجيا','٩٠٪ من الطلاب يخطئون في هذا المفهوم — تأكد أنك لست منهم')">
+              <div class="rc-thumb" style="background:var(--amber-dim)">🔬</div>
+              <div class="rc-info">
+                <div class="rc-title">خطأ شائع في الباثولوجيا</div>
+                <div class="rc-meta"><span class="rc-tag" style="background:var(--amber-dim);color:var(--amber)">باثولوجيا</span><span class="rc-dur">٢ د</span><span class="rc-views">· ١.٨ك مشاهدة</span></div>
+              </div>
+            </div>
+            <div class="reel-card" onclick="selectReel(this,'الكلى — كيف تنقي الدم؟','رحلة قطرة الدم من الوارد إلى الصادر شرح بصري')">
+              <div class="rc-thumb" style="background:var(--blue-dim)">🫘</div>
+              <div class="rc-info">
+                <div class="rc-title">الكلى — كيف تنقي الدم؟</div>
+                <div class="rc-meta"><span class="rc-tag" style="background:var(--blue-dim);color:var(--blue)">فسيولوجيا</span><span class="rc-dur">٤ د</span><span class="rc-views">· ٩٧٢ مشاهدة</span></div>
+              </div>
+            </div>
+            <div class="reel-card" onclick="selectReel(this,'٣ أدوية تنقذ الحياة','لماذا تعمل هذه الأدوية؟ الفارماكولوجي بشكل مختلف')">
+              <div class="rc-thumb" style="background:var(--red-dim)">💊</div>
+              <div class="rc-info">
+                <div class="rc-title">٣ أدوية تنقذ الحياة</div>
+                <div class="rc-meta"><span class="rc-tag" style="background:var(--red-dim);color:var(--red)">فارماكولوجي</span><span class="rc-dur">٦ د</span><span class="rc-views">· ٥.٢ك مشاهدة</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REELS SIDEBAR -->
+        <div class="reels-sidebar">
+          <div class="rs-section">
+            <div class="rs-title">لماذا هذا مناسب لك</div>
+            <div class="insight-card">
+              <div class="ic-top"><div class="ic-icon teal"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><span class="ic-label">امتحانك بعد ١٢ يوم</span></div>
+              <div class="ic-body">المحتوى مرتب حسب <strong>أولوية الامتحان</strong> — ابدأ بالجهاز الدوري والجهاز العصبي</div>
+            </div>
+            <div class="insight-card">
+              <div class="ic-top"><div class="ic-icon amber"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><span class="ic-label">نقطة ضعف محددة</span></div>
+              <div class="ic-body">أداؤك في <strong>الباثولوجيا ٦٢٪</strong> — لدينا ٣ ريلز تعيد بناء الأساس بسرعة</div>
+            </div>
+            <div class="insight-card">
+              <div class="ic-top"><div class="ic-icon blue"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><span class="ic-label">رفاق دراستك يشاهدون</span></div>
+              <div class="ic-body"><strong>٢٣ طالب</strong> من تخصصك شاهدوا "الجهاز العصبي" هذا الأسبوع</div>
+            </div>
+          </div>
+          <div class="rs-section">
+            <div class="rs-title">جلسة اليوم</div>
+            <div style="background:var(--surface2);border:0.5px solid var(--border);border-radius:12px;padding:14px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+                <span style="font-size:12px;color:var(--text2)">وقت المشاهدة</span>
+                <span style="font-size:12px;font-weight:700;color:var(--teal-l)" id="watch-time">٠:٠٠</span>
+              </div>
+              <div style="height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;margin-bottom:10px">
+                <div style="height:100%;background:var(--teal);border-radius:2px;transition:width .5s" id="session-bar" style="width:0%"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between">
+                <span style="font-size:11px;color:var(--text3)">٠ دقيقة</span>
+                <span style="font-size:11px;color:var(--text3)">٢٠ دقيقة</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CAREERS TAB ===== -->
+    <div class="tab-pane" id="tab-careers">
+      <div class="careers-layout">
+        <div class="career-hero">
+          <div class="ch-left">
+            <div class="ch-badge">طب بشري · السنة الثانية</div>
+            <div class="ch-title">وين بيوصلك تخصصك؟</div>
+            <div class="ch-sub">بناءً على مسارك الحالي، هذه الوظائف الأنسب لك — مرتبة بالتوافق مع اهتماماتك</div>
+          </div>
+          <div class="ch-right">
+            <div class="ch-stat">
+              <div class="ch-stat-num">+١٢</div>
+              <div class="ch-stat-label">مسار وظيفي متاح</div>
+            </div>
+            <div class="ch-stat">
+              <div class="ch-stat-num" style="color:var(--amber)">٣٢K$</div>
+              <div class="ch-stat-label">متوسط الراتب سنوياً</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="career-path-label">المسارات المقترحة لك</div>
+        <div class="career-paths">
+
+          <div class="cp-card featured">
+            <div class="cp-head">
+              <div class="cp-icon teal"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+              <span class="cp-match high">توافق ٩٥٪</span>
+            </div>
+            <div class="cp-title">طبيب قلب وأوعية دموية</div>
+            <div class="cp-sub">التخصص الأعلى طلباً في المنطقة — يتوافق مع قوتك في الفسيولوجيا والتشريح</div>
+            <div class="cp-salary-row">
+              <div><div class="salary-label">متوسط الراتب</div><div class="salary-range">سنوياً</div></div>
+              <div style="text-align:left"><div class="salary-val">٨٠K – ١٢٠K$</div><div class="salary-range">الخليج والغرب</div></div>
+            </div>
+            <div class="cp-skills">
+              <span class="cp-skill">تشريح</span><span class="cp-skill">فسيولوجيا القلب</span><span class="cp-skill">أشعة تشخيصية</span><span class="cp-skill">قسطرة</span>
+            </div>
+          </div>
+
+          <div class="cp-card">
+            <div class="cp-head">
+              <div class="cp-icon purple"><svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/></svg></div>
+              <span class="cp-match high">توافق ٨٨٪</span>
+            </div>
+            <div class="cp-title">طبيب أعصاب</div>
+            <div class="cp-sub">مجال متنامٍ بسرعة — مناسب إذا طورت نقطة ضعفك الحالية في الباثولوجيا</div>
+            <div class="cp-salary-row">
+              <div><div class="salary-label">متوسط الراتب</div><div class="salary-range">سنوياً</div></div>
+              <div style="text-align:left"><div class="salary-val">٦٠K – ١٠٠K$</div><div class="salary-range">الخليج والغرب</div></div>
+            </div>
+            <div class="cp-skills"><span class="cp-skill">جهاز عصبي</span><span class="cp-skill">MRI</span><span class="cp-skill">باثولوجيا</span></div>
+          </div>
+
+          <div class="cp-card">
+            <div class="cp-head">
+              <div class="cp-icon amber"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+              <span class="cp-match mid">توافق ٧١٪</span>
+            </div>
+            <div class="cp-title">باحث طبي</div>
+            <div class="cp-sub">يجمع الطب والعلم — مناسب إذا أضفت البحث العلمي لمساراتك</div>
+            <div class="cp-salary-row">
+              <div><div class="salary-label">متوسط الراتب</div><div class="salary-range">سنوياً</div></div>
+              <div style="text-align:left"><div class="salary-val">٤٠K – ٨٠K$</div><div class="salary-range">عالمياً</div></div>
+            </div>
+            <div class="cp-skills"><span class="cp-skill">إحصاء</span><span class="cp-skill">بحث سريري</span><span class="cp-skill">نشر علمي</span></div>
+          </div>
+
+          <div class="cp-card">
+            <div class="cp-head">
+              <div class="cp-icon blue"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+              <span class="cp-match mid">توافق ٦٥٪</span>
+            </div>
+            <div class="cp-title">طب الذكاء الاصطناعي</div>
+            <div class="cp-sub">مجال المستقبل — يدمج الطب مع تحليل البيانات والتشخيص الذكي</div>
+            <div class="cp-salary-row">
+              <div><div class="salary-label">متوسط الراتب</div><div class="salary-range">سنوياً</div></div>
+              <div style="text-align:left"><div class="salary-val">٧٠K – ١٥٠K$</div><div class="salary-range">الولايات المتحدة</div></div>
+            </div>
+            <div class="cp-skills"><span class="cp-skill">Python</span><span class="cp-skill">ML طبي</span><span class="cp-skill">تصوير</span></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROGRESS TAB ===== -->
+    <div class="tab-pane active" id="tab-progress">
+      <div class="progress-layout">
+        <div class="prog-header">
+          <div class="prog-title">تقدمك البصري</div>
+          <div class="prog-sub">طب بشري — السنة الثانية · الفصل الثاني</div>
+        </div>
+
+        <!-- RING CARD -->
+        <div class="prog-main-card">
+          <div class="ring-wrap">
+            <svg class="ring-svg" width="130" height="130" viewBox="0 0 130 130">
+              <circle cx="65" cy="65" r="54" fill="none" stroke="#1D9E7515" stroke-width="10"/>
+              <circle cx="65" cy="65" r="54" fill="none" stroke="#1D9E75" stroke-width="10"
+                stroke-dasharray="339.3" stroke-dashoffset="203.6"
+                stroke-linecap="round" transform="rotate(-90 65 65)"
+                id="ring-circle" style="transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)"/>
+              <text x="65" y="60" text-anchor="middle" font-family="Tajawal,sans-serif" font-size="24" font-weight="900" fill="#F5F5F2">٤٠٪</text>
+              <text x="65" y="76" text-anchor="middle" font-family="Cairo,sans-serif" font-size="11" fill="#888880">مكتمل</text>
+            </svg>
+            <div class="ring-info">
+              <div class="ring-title">أنت في منتصف رحلتك — هكذا 💪</div>
+              <div class="ring-sub">أكملت <strong style="color:var(--teal-l)">٤٠٪</strong> من مقرر السنة الثانية. معدل تقدمك أعلى من <strong style="color:var(--text)">٧٣٪</strong> من طلاب نفس التخصص.</div>
+              <div class="ring-stats">
+                <div class="rs-stat"><div class="rs-stat-val">٤٨</div><div class="rs-stat-label">يوم دراسة</div></div>
+                <div class="rs-stat"><div class="rs-stat-val">٣٠٠</div><div class="rs-stat-label">XP مكتسب</div></div>
+                <div class="rs-stat"><div class="rs-stat-val">١٢</div><div class="rs-stat-label">سلسلة يومية</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRACK BARS -->
+        <div class="career-path-label">تفاصيل كل مادة</div>
+        <div class="prog-tracks">
+          <div class="pt-card">
+            <div class="pt-head"><span class="pt-title">تشريح الجسم</span><span class="pt-pct" style="color:var(--teal-l)">٦٨٪</span></div>
+            <div class="pt-bar-wrap"><div class="pt-bar teal animate-bar" data-w="68%"></div></div>
+            <div class="pt-meta"><span class="pt-meta-item">١٧/٢٥ وحدة</span><span class="pt-meta-item">٨ متبقية</span></div>
+          </div>
+          <div class="pt-card">
+            <div class="pt-head"><span class="pt-title">الفسيولوجيا</span><span class="pt-pct" style="color:var(--teal-l)">٥٥٪</span></div>
+            <div class="pt-bar-wrap"><div class="pt-bar teal animate-bar" data-w="55%"></div></div>
+            <div class="pt-meta"><span class="pt-meta-item">١١/٢٠ وحدة</span><span class="pt-meta-item">٩ متبقية</span></div>
+          </div>
+          <div class="pt-card">
+            <div class="pt-head"><span class="pt-title">الباثولوجيا</span><span class="pt-pct" style="color:var(--amber)">٣٢٪</span></div>
+            <div class="pt-bar-wrap"><div class="pt-bar amber animate-bar" data-w="32%"></div></div>
+            <div class="pt-meta"><span class="pt-meta-item">٦/١٨ وحدة</span><span class="pt-meta-item" style="color:var(--amber)">تحتاج تركيز</span></div>
+          </div>
+          <div class="pt-card">
+            <div class="pt-head"><span class="pt-title">الكيمياء الحيوية</span><span class="pt-pct" style="color:var(--blue)">٧٢٪</span></div>
+            <div class="pt-bar-wrap"><div class="pt-bar blue animate-bar" data-w="72%"></div></div>
+            <div class="pt-meta"><span class="pt-meta-item">١٣/١٨ وحدة</span><span class="pt-meta-item">٥ متبقية</span></div>
+          </div>
+          <div class="pt-card">
+            <div class="pt-head"><span class="pt-title">الميكروبيولوجيا</span><span class="pt-pct" style="color:var(--text3)">١٥٪</span></div>
+            <div class="pt-bar-wrap"><div class="pt-bar" style="background:var(--border3);transition:width 1.2s" data-w="15%"></div></div>
+            <div class="pt-meta"><span class="pt-meta-item">٣/٢٠ وحدة</span><span class="pt-meta-item">لم يبدأ بعد</span></div>
+          </div>
+          <div class="pt-card">
+            <div class="pt-head"><span class="pt-title">الفارماكولوجي</span><span class="pt-pct" style="color:var(--purple)">٤٨٪</span></div>
+            <div class="pt-bar-wrap"><div class="pt-bar purple animate-bar" data-w="48%"></div></div>
+            <div class="pt-meta"><span class="pt-meta-item">٨/١٦ وحدة</span><span class="pt-meta-item">٨ متبقية</span></div>
+          </div>
+        </div>
+
+        <!-- TIMELINE -->
+        <div class="career-path-label">خط زمن الرحلة</div>
+        <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:14px;padding:18px">
+          <div class="timeline">
+            <div class="tl-item tl-done">
+              <div class="tl-dot-wrap"><div class="tl-dot done"></div></div>
+              <div class="tl-info"><div class="tl-title">بدأت الفصل الثاني</div><div class="tl-sub">١ يناير ٢٠٢٦</div><span class="tl-badge done">مكتمل</span></div>
+            </div>
+            <div class="tl-item tl-done">
+              <div class="tl-dot-wrap"><div class="tl-dot done"></div></div>
+              <div class="tl-info"><div class="tl-title">أتممت وحدات التشريح الأولى</div><div class="tl-sub">٢٠ يناير ٢٠٢٦</div><span class="tl-badge done">مكتمل</span></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot-wrap"><div class="tl-dot active"></div></div>
+              <div class="tl-info"><div class="tl-title">امتحان الفسيولوجيا والتشريح</div><div class="tl-sub">٢٩ مارس ٢٠٢٦ — بعد ١٢ يوم</div><span class="tl-badge active">قريباً</span></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot-wrap"><div class="tl-dot upcoming"></div></div>
+              <div class="tl-info"><div class="tl-title">نهاية وحدات الباثولوجيا</div><div class="tl-sub">١٥ أبريل ٢٠٢٦</div><span class="tl-badge upcoming">قادم</span></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot-wrap"><div class="tl-dot upcoming"></div></div>
+              <div class="tl-info"><div class="tl-title">امتحانات نهاية الفصل</div><div class="tl-sub">مايو ٢٠٢٦</div><span class="tl-badge upcoming">قادم</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+var activeTab='progress';
+var watchSecs=0;var watchTimer=null;
+var reelTimer=null;var reelPct=0;
+
+function setTab(name,sbEl,tbEl){
+  document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active')});
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(function(i){i.classList.remove('active')});
+  if(sbEl)sbEl.classList.add('active');
+  document.querySelectorAll('.tb-tab').forEach(function(t){t.classList.remove('active')});
+  var tb=tbEl||document.getElementById('tab-btn-'+name);
+  if(tb)tb.classList.add('active');
+  activeTab=name;
+  if(name==='reels'){startWatch();startReelBar();}
+  else{stopWatch();stopReelBar();}
+}
+
+function startWatch(){
+  if(watchTimer)return;
+  watchTimer=setInterval(function(){
+    watchSecs++;
+    var m=Math.floor(watchSecs/60);var s=watchSecs%60;
+    var el=document.getElementById('watch-time');
+    if(el)el.textContent=m+':'+(s<10?'0':'')+s;
+    var pct=Math.min(watchSecs/1200*100,100);
+    var bar=document.getElementById('session-bar');
+    if(bar)bar.style.width=pct+'%';
+  },1000);
+}
+function stopWatch(){clearInterval(watchTimer);watchTimer=null;}
+
+function startReelBar(){
+  reelPct=0;
+  if(reelTimer)clearInterval(reelTimer);
+  reelTimer=setInterval(function(){
+    reelPct+=0.5;
+    var bar=document.getElementById('reel-bar');
+    if(bar)bar.style.width=Math.min(reelPct,100)+'%';
+    if(reelPct>=100){clearInterval(reelTimer);}
+  },90);
+}
+function stopReelBar(){clearInterval(reelTimer);reelTimer=null;}
+
+function selectReel(el,title,sub){
+  document.querySelectorAll('.reel-card').forEach(function(c){c.classList.remove('playing')});
+  el.classList.add('playing');
+  document.getElementById('reel-main-title').textContent=title;
+  document.getElementById('reel-main-sub').textContent=sub;
+  startReelBar();
+}
+function playNext(){
+  var cards=document.querySelectorAll('.reel-card');
+  var current=-1;
+  cards.forEach(function(c,i){if(c.classList.contains('playing'))current=i;});
+  var next=cards[(current+1)%cards.length];
+  next.click();
+}
+function toggleLike(){document.getElementById('like-btn').classList.toggle('liked');}
+
+window.addEventListener('load',function(){
+  setTimeout(function(){
+    document.querySelectorAll('.animate-bar').forEach(function(b){
+      b.style.width=b.getAttribute('data-w');
+    });
+    document.querySelectorAll('[data-w]').forEach(function(b){
+      b.style.width=b.getAttribute('data-w');
+    });
+  },300);
+});
+</script>

@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { GraduationCap, LayoutDashboard, Map, Search } from "lucide-react";
+import { LayoutDashboard, Map, Search } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { LinkButton } from "@/components/ui/link-button";
+import { BrandMark } from "@/components/brand/brand-mark";
 
 const nav = [
   { href: "/courses", label: "استكشاف المناهج", icon: Search },
@@ -12,11 +13,11 @@ const nav = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/75 backdrop-blur supports-backdrop-filter:bg-background/60">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-background/70 backdrop-blur supports-backdrop-filter:bg-background/60">
       <Container className="flex h-16 items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2">
-          <span className="grid size-9 place-items-center rounded-xl bg-primary text-primary-foreground">
-            <GraduationCap className="size-5" />
+          <span className="grid size-9 place-items-center rounded-xl bg-white/5 ring-1 ring-white/10">
+            <BrandMark variant="icon" priority className="scale-[0.80]" />
           </span>
           <div className="leading-tight">
             <div className="text-sm font-semibold">Jatory</div>

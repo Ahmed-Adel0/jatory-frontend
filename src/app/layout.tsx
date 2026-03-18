@@ -1,10 +1,19 @@
 import type { Metadata } from "next";
-import { Cairo, Geist_Mono } from "next/font/google";
+import { Cairo, Geist_Mono, Tajawal } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/features/auth/auth-context";
+import { AuthModalProvider } from "@/features/auth/auth-modal";
 
 const cairo = Cairo({
   variable: "--font-sans",
   subsets: ["arabic", "latin"],
+  display: "swap",
+});
+
+const tajawal = Tajawal({
+  variable: "--font-tajawal",
+  subsets: ["arabic", "latin"],
+  weight: ["300", "400", "500", "700", "900"],
   display: "swap",
 });
 
@@ -27,8 +36,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
-      <body className={`${cairo.variable} ${geistMono.variable} antialiased`}>
-        {children}
+      <body
+        className={`${cairo.variable} ${tajawal.variable} ${geistMono.variable} antialiased`}
+      >
+        <AuthProvider>
+          <AuthModalProvider>{children}</AuthModalProvider>
+        </AuthProvider>
       </body>
     </html>
   );
