@@ -24,9 +24,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jatory | من التشتت إلى الترتيب",
+  title: "Jatory",
   description:
     "منصة تعليمية تربط طلاب العلوم بالمسارات المهنية عبر محتوى منظم وخرائط طريق مدعومة بالذكاء الاصطناعي.",
+  icons: {
+    icon: "/logoicon.jpeg"
+  }
 };
 
 export default function RootLayout({
