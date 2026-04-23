@@ -1,81 +1,70 @@
 "use client";
 
-import * as React from "react";
-import { motion } from "framer-motion";
-
+import React from "react";
+import { Navbar } from "@/components/Navbar";
+import { Hero } from "@/components/Hero";
+import { RoadmapsSection } from "@/components/RoadmapsSection";
+import { useI18n } from "@/lib/i18n";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 
-export default function MaintenancePage() {
+const sections_keys = [
+  { id: "most-viewed", key: "most_viewed" },
+  { id: "scientific-research", key: "scientific_research" },
+  { id: "entrepreneurship", key: "entrepreneurship" },
+  { id: "podcast", key: "podcast" },
+  { id: "psychological-aspect", key: "psychological_aspect" },
+  { id: "free-courses", key: "free_courses" },
+  { id: "metaverse", key: "metaverse" },
+  { id: "courses", key: "courses" },
+];
+
+export default function MainInterface() {
+  const { t, lang } = useI18n();
+
   return (
-    <div className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-[#020617] text-white">
-      {/* Background Glow */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.08),transparent_70%)]" />
+    <main className="min-h-screen bg-black text-white selection:bg-[#0dcfcf]/30">
+      <Navbar />
+      
+      <Hero />
 
-      {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center text-center">
-        {/* Glowing Logo Container */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative pt-10"
-        >
-          {/* Main Cyan Glow behind logo */}
-          <div className="absolute left-1/2 top-1/2 -z-10 size-48 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/40 blur-[80px]" />
-          <div className="absolute left-1/2 top-1/2 -z-10 size-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/20 blur-[40px]" />
-          
-          <div className="relative flex size-32 items-center justify-center rounded-[2.5rem] bg-black shadow-[0_0_1px_1px_rgba(255,255,255,0.1)_inset,0_20px_40px_-10px_rgba(0,0,0,0.5)] overflow-hidden">
-             {/* Subtle interior glow */}
-             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(6,182,212,0.25),transparent_70%)]" />
-             
-             {/* The Image replacing the SVG */}
-             <Image
-               src="/logoicon.jpeg"
-               alt="Jatory Logo"
-               width={128}
-               height={128}
-               className="size-full object-cover"
-               priority
-             />
-          </div>
-        </motion.div>
+      <RoadmapsSection />
 
-        {/* Title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          className="mt-8 font-tajawal text-5xl font-black tracking-tight"
-        >
-          Jatory
-        </motion.h1>
-
-        {/* Status Text */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="mt-4 flex items-center gap-2 text-lg font-bold text-white/40"
-        >
-          جاري العمل على الموقع
-          <span className="text-xl">🚀</span>
-        </motion.p>
-
-        {/* Enter Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="mt-12"
-        >
-          <Button
-            className="h-14 w-52 rounded-full border-none bg-gradient-to-r from-cyan-400 to-cyan-600 text-lg font-black text-white shadow-[0_4px_20px_rgba(6,182,212,0.3)] transition hover:scale-105 hover:from-cyan-300 hover:to-cyan-500 active:scale-95"
-          >
-            Enter
-          </Button>
-        </motion.div>
+      {/* Legacy Content Sections for backward compatibility or extra content */}
+      <div className="relative z-20 pb-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {sections_keys.map((section, idx) => (
+          <section key={section.id} className="mb-16">
+            <div className="mb-6 flex items-center gap-2">
+              <h2 className="text-2xl md:text-3xl font-bold text-white">{t(section.key)}</h2>
+              <ChevronRight className={`w-6 h-6 text-[#0dcfcf] ${lang === "ar" ? "rotate-180" : ""}`} />
+            </div>
+            
+            <div className="flex overflow-x-auto gap-6 pb-6 snap-x scrollbar-hide">
+              {[1, 2, 3, 4, 5].map((item) => (
+                <div 
+                  key={item} 
+                  className="min-w-[300px] md:min-w-[400px] aspect-video rounded-2xl border border-white/10 bg-white/5 overflow-hidden snap-start relative flex flex-col group cursor-pointer transition-all hover:border-[#0dcfcf]/40"
+                >
+                  <div className="w-full h-full relative overflow-hidden">
+                    <Image 
+                      src={`https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop&sig=${section.id}-${item}`}
+                      alt={t(section.key)}
+                      fill
+                      className="object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                    <div className="absolute bottom-6 left-6 right-6">
+                      <div className="h-1 w-12 bg-[#0dcfcf] mb-4"></div>
+                      <div className="h-4 w-3/4 bg-white/20 rounded mb-2"></div>
+                      <div className="h-4 w-1/2 bg-white/20 rounded"></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
-    </div>
+    </main>
   );
 }

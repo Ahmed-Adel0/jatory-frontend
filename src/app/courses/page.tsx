@@ -1,23 +1,23 @@
-import { Building2, Filter, FlaskConical, Layers, Search } from "lucide-react";
+"use client";
 
-import { Container } from "@/components/layout/container";
-import { SiteFooter } from "@/components/layout/site-footer";
-import { SiteHeader } from "@/components/layout/site-header";
-import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
+import { Building2, Search, Filter, FlaskConical, Layers, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-type Department = {
-  id: string;
-  college: string;
-  name: string;
-  tags: string[];
-  sampleCourses: string[];
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { delay: i * 0.1, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const },
+  }),
 };
 
-const departments: Department[] = [
+const departments = [
   {
     id: "chem",
     college: "كلية العلوم",
@@ -63,83 +63,123 @@ const filters = [
 
 export default function CourseExplorerPage() {
   return (
-    <div className="min-h-dvh">
-      <SiteHeader />
-
-      <main>
-        <Container className="py-10 sm:py-14">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <Badge variant="secondary">مستعرض المناهج</Badge>
-              <h1 className="mt-3 text-2xl font-bold sm:text-3xl">
-                استكشف الكليات والأقسام بسرعة
-              </h1>
-              <p className="mt-2 max-w-2xl text-sm leading-7 text-muted-foreground">
-                واجهة نظيفة لعرض الأقسام مع فلترة سريعة — جاهزة لربطها لاحقًا
-                ببيانات جامعتك/خطتك الدراسية.
-              </p>
-            </div>
+    <div className="min-h-screen bg-background bg-grid rtl selection:bg-primary/30">
+      {/* Navbar */}
+      <nav className="fixed top-0 inset-x-0 z-50 glass-card border-b border-border/50">
+        <div className="container mx-auto flex items-center justify-between h-16 px-4">
+          <Link href="/" className="text-2xl font-heading font-bold text-gradient">Jatory</Link>
+          <div className="flex items-center gap-4">
+             <Link href="/dashboard">
+              <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                اللوحة
+              </Button>
+            </Link>
           </div>
+        </div>
+      </nav>
 
-          <div className="mt-6 grid gap-3 md:grid-cols-12 md:items-center">
-            <div className="relative md:col-span-8">
-              <Search className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <Input className="pr-10" placeholder="ابحث عن قسم أو مادة…" />
-            </div>
-            <div className="md:col-span-4">
-              <Tabs defaultValue="all" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  {filters.map((f) => (
-                    <TabsTrigger key={f.id} value={f.id} className="gap-2">
-                      <f.icon className="size-4" />
-                      <span className="hidden sm:inline">{f.label}</span>
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-              </Tabs>
-            </div>
-          </div>
+      <main className="pt-24 pb-12">
+        <div className="container mx-auto px-4">
+          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
+            <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20 mb-4 px-4 py-1">مستعرض المناهج</Badge>
+            <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">
+              استكشف الكليات <span className="text-gradient">والأقسام</span>
+            </h1>
+            <p className="text-muted-foreground max-w-2xl mb-12">
+              واجهة ذكية لعرض الأقسام العلمية مع نظام فلترة وبحث متطور. ابحث عن موادك واكتشف مساراتك الأكاديمية القادمة بكل سهولة.
+            </p>
+          </motion.div>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {departments.map((d) => (
-              <Card key={d.id} className="transition hover:shadow-sm">
-                <CardHeader>
-                  <CardTitle className="flex items-start justify-between gap-3 text-base">
-                    <span>{d.name}</span>
-                    <Badge variant="outline" className="gap-2">
-                      <Building2 className="size-3.5" />
-                      {d.college}
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="grid gap-3">
-                  <div className="flex flex-wrap gap-2">
-                    {d.tags.map((t) => (
-                      <Badge key={t} variant="secondary">
-                        {t}
-                      </Badge>
-                    ))}
+          {/* Search and Filter */}
+          <motion.div 
+            initial="hidden" animate="visible" variants={fadeUp} custom={1}
+            className="flex flex-col md:flex-row gap-4 mb-12"
+          >
+            <div className="relative flex-1">
+              <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="ابحث عن قسم أو مادة…"
+                className="h-12 pr-12 bg-secondary/50 border-border/50 focus:border-primary/50 transition-all rounded-xl"
+              />
+            </div>
+            <Tabs defaultValue="all" className="w-full md:w-auto">
+              <TabsList className="h-12 bg-secondary/50 border border-border/50 rounded-xl p-1 grid grid-cols-3 md:flex md:w-auto">
+                {filters.map((f) => (
+                  <TabsTrigger key={f.id} value={f.id} className="gap-2 px-6 rounded-lg data-[state=active]:bg-card transition-all">
+                    <f.icon className="h-4 w-4" />
+                    <span>{f.label}</span>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </motion.div>
+
+          {/* Departments Grid */}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {departments.map((d, i) => (
+              <motion.div
+                key={d.id}
+                initial="hidden" animate="visible" variants={fadeUp} custom={i + 2}
+              >
+                <Card className="glass-card hover:glow-border transition-all duration-300 border-border/50 group h-full flex flex-col justify-between overflow-hidden">
+                  <div>
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge variant="outline" className="gap-2 border-border/50 py-1 px-3">
+                          <Building2 className="h-3.5 w-3.5 text-primary" />
+                          {d.college}
+                        </Badge>
+                      </div>
+                      <CardTitle className="text-xl font-heading font-bold group-hover:text-primary transition-colors">
+                        {d.name}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="flex flex-wrap gap-2 text-right">
+                        {d.tags.map((t) => (
+                          <span key={t} className="text-xs px-2 py-0.5 rounded-full bg-secondary/50 text-muted-foreground">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="space-y-3">
+                        <p className="text-sm font-bold text-foreground">أمثلة مواد :</p>
+                        <div className="space-y-2">
+                          {d.sampleCourses.map((c) => (
+                            <div key={c} className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                              <span className="w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0" />
+                              {c}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
                   </div>
-                  <div className="text-sm text-muted-foreground">
-                    أمثلة مواد:
-                    <ul className="mt-2 list-inside list-disc space-y-1">
-                      {d.sampleCourses.map((c) => (
-                        <li key={c}>{c}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <Button variant="outline" className="w-full">
-                    فتح القسم
-                  </Button>
-                </CardContent>
-              </Card>
+                  <CardContent className="pt-0">
+                    <Link href={`/courses/${d.id}`}>
+                      <Button variant="outline" className="w-full h-11 rounded-xl border-border/50 hover:bg-primary/10 hover:text-primary hover:border-primary/40 transition-all group-hover:bg-primary group-hover:text-primary-foreground">
+                        دخول القسم
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
-        </Container>
+        </div>
       </main>
 
-      <SiteFooter />
+      {/* Footer */}
+      <footer className="py-12 border-t border-border/50 bg-card/30 mt-12">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-sm text-muted-foreground">
+            © 2026 Jatory — AI Academic Operating System
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
+
 

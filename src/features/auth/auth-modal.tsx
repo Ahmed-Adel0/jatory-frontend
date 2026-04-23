@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Linkedin, Lock, Sparkles } from "lucide-react";
+import { Lock, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { BrandMark } from "@/components/brand/brand-mark";
@@ -57,6 +57,24 @@ function GoogleG() {
         fill="currentColor"
         d="M21.8 10.2H12v3.9h5.6c-.7 2.2-2.6 3.9-5.6 3.9A6.3 6.3 0 0 1 12 5.6c1.7 0 3.2.6 4.3 1.7l2.7-2.7A9.8 9.8 0 0 0 12 2.2C6.9 2.2 2.8 6.3 2.8 11.4S6.9 20.6 12 20.6c5.5 0 9.2-3.9 9.2-9.4 0-.6-.1-1.1-.2-1.6Z"
       />
+    </svg>
+  );
+}
+
+function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+      <rect width="4" height="12" x="2" y="9" />
+      <circle cx="4" cy="4" r="2" />
     </svg>
   );
 }
@@ -128,7 +146,7 @@ function AuthModal({
                 }}
               >
                 <span className="grid size-7 place-items-center rounded-lg bg-white/10">
-                  <Linkedin className="size-4" />
+                  <LinkedinIcon className="size-4" />
                 </span>
                 المتابعة عبر LinkedIn
               </Button>
