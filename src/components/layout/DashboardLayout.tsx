@@ -1,5 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "./DashboardSidebar";
+import { UserProfileMenu } from "./UserProfileMenu";
 import { Bell, Search } from "lucide-react";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -24,9 +25,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 <Bell className="h-5 w-5 text-muted-foreground" />
                 <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary" />
               </button>
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-sm">
-                أ
-              </div>
+              <UserProfileMenu />
             </div>
           </header>
           <main className="flex-1 p-6 overflow-auto">{children}</main>

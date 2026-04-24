@@ -10,19 +10,19 @@ const ar: Dict = {
   // nav
   "nav.home": "الرئيسية",
   "nav.roadmaps": "المجالات",
-  "nav.satory": "Satory AI",
+  "nav.satory": "Jatory AI",
   "nav.opportunities": "الفرص",
   "nav.community": "المجتمع",
   "nav.signin": "تسجيل الدخول",
   "nav.cta": "ابدأ مسارك",
 
   // hero
-  "hero.badge": "Satory AI · النواة الذكية",
+  "hero.badge": "Jatory AI · النواة الذكية",
   "hero.title.from": "من مسارك",
   "hero.title.to": "إلى قصتك",
   "hero.kicker": "Trajectory → Story",
   "hero.desc":
-    "نظام تشغيل أكاديمي مدعوم بالذكاء الاصطناعي يبني لك خارطة طريق شخصية من قاعات الجامعة إلى سوق العمل، البحث العلمي، وريادة الأعمال.",
+    "نظام تشغيل أكاديمي مدعوم بالذكاء الاصطناعي يبني لك خارطة طريق شخصية من قاعات الجامعة إلى سوق العمل.",
   "hero.cta.primary": "ابدأ مسارك",
   "hero.cta.secondary": "استكشف المجالات",
   "hero.viz.label": "مُحاكي المسار",
@@ -50,8 +50,8 @@ const ar: Dict = {
   "roads.explore": "استكشف المسار",
   "roads.verified": "يتفعّل بعد التحقق من الهوية الجامعية",
   "roads.custom.title": "مسار مخصص",
-  "roads.custom.desc": "تحدّث مع Satory AI لبناء خارطة طريق فريدة تناسب اهتماماتك وأهدافك.",
-  "roads.custom.cta": "ابنِ مسارك مع Satory",
+  "roads.custom.desc": "تحدّث مع Jatory AI لبناء خارطة طريق فريدة تناسب اهتماماتك وأهدافك.",
+  "roads.custom.cta": "ابنِ مسارك مع Jatory",
 
   // domains
   "d.medicine": "الطب",
@@ -82,18 +82,18 @@ const ar: Dict = {
 const en: Dict = {
   "nav.home": "Home",
   "nav.roadmaps": "Roadmaps",
-  "nav.satory": "Satory AI",
+  "nav.satory": "Jatory AI",
   "nav.opportunities": "Opportunities",
   "nav.community": "Community",
   "nav.signin": "Sign in",
   "nav.cta": "Start your trajectory",
 
-  "hero.badge": "Satory AI · The Intelligent Core",
+  "hero.badge": "Jatory AI · The Intelligent Core",
   "hero.title.from": "From your trajectory",
   "hero.title.to": "to your story",
   "hero.kicker": "Trajectory → Story",
   "hero.desc":
-    "An AI-powered academic operating system that builds your personal roadmap — from university lecture halls to the job market, research, and entrepreneurship.",
+    "An AI-powered academic operating system that builds your personal roadmap — from university lecture halls to the job market.",
   "hero.cta.primary": "Start your trajectory",
   "hero.cta.secondary": "Explore roadmaps",
   "hero.viz.label": "Trajectory Visualizer",
@@ -120,8 +120,8 @@ const en: Dict = {
   "roads.explore": "Explore roadmap",
   "roads.verified": "Activates after university ID verification",
   "roads.custom.title": "Custom roadmap",
-  "roads.custom.desc": "Talk with Satory AI to build a unique roadmap tailored to your interests and goals.",
-  "roads.custom.cta": "Build with Satory",
+  "roads.custom.desc": "Talk with Jatory AI to build a unique roadmap tailored to your interests and goals.",
+  "roads.custom.cta": "Build with Jatory",
 
   "d.medicine": "Medicine",
   "d.medicine.desc": "From year one to specialization, board exams, and clinical practice.",

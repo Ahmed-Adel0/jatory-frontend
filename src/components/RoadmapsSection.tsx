@@ -35,14 +35,13 @@ type Domain = {
 };
 
 const domains: Domain[] = [
-  { id: "medicine", category: "stem", titleKey: "d.medicine", descKey: "d.medicine.desc", icon: HeartPulse, stations: 18, resources: 240, verified: true },
-  { id: "pharmacy", category: "stem", titleKey: "d.pharmacy", descKey: "d.pharmacy.desc", icon: Pill, stations: 14, resources: 180, verified: true },
-  { id: "engineering", category: "stem", titleKey: "d.engineering", descKey: "d.engineering.desc", icon: Cog, stations: 16, resources: 210 },
-  { id: "cs", category: "stem", titleKey: "d.cs", descKey: "d.cs.desc", icon: Brain, stations: 20, resources: 320 },
-  { id: "dentistry", category: "stem", titleKey: "d.dentistry", descKey: "d.dentistry.desc", icon: Smile, stations: 12, resources: 150, verified: true },
-  { id: "science", category: "stem", titleKey: "d.science", descKey: "d.science.desc", icon: Atom, stations: 14, resources: 170 },
-  { id: "research", category: "research", titleKey: "d.research", descKey: "d.research.desc", icon: Microscope, stations: 10, resources: 120 },
-  { id: "entre", category: "entre", titleKey: "d.entre", descKey: "d.entre.desc", icon: Rocket, stations: 12, resources: 140 },
+  { id: "medicine", category: "stem", titleKey: "الطب البشري", descKey: "من السنة الأولى للتخصص، الامتحانات الموحّدة، والممارسة السريرية", icon: HeartPulse, stations: 18, resources: 240, verified: true },
+  { id: "engineering", category: "stem", titleKey: "الهندسة", descKey: "تخصصات هندسية متعددة مع مشاريع تطبيقية وشهادات مهنية معتمدة", icon: Cog, stations: 16, resources: 210 },
+  { id: "cs", category: "stem", titleKey: "علوم الحاسب", descKey: "برمجة، ذكاء اصطناعي، أمن سيبراني، وعلوم بيانات بمسارات متخصصة", icon: Brain, stations: 20, resources: 320 },
+  { id: "pharmacy", category: "stem", titleKey: "الصيدلة", descKey: "العلوم الصيدلانية، الصيدلة السريرية، وصناعة الدواء", icon: Pill, stations: 14, resources: 180, verified: true },
+  { id: "science", category: "stem", titleKey: "العلوم الأساسية", descKey: "فيزياء، كيمياء، أحياء، ورياضيات مع مسارات بحثية متخصصة", icon: Atom, stations: 14, resources: 170 },
+  { id: "dentistry", category: "stem", titleKey: "طب الأسنان", descKey: "العلوم الأساسية، الإكلينيك، والتخصصات الفرعية المختلفة", icon: Smile, stations: 12, resources: 150, verified: true },
+  { id: "research", category: "research", titleKey: "البحث العلمي", descKey: "من فكرة البحث إلى النشر في المجلات المحكّمة الدولية", icon: Microscope, stations: 10, resources: 120 },
 ];
 
 const filters: { key: Category | "all"; labelKey: string }[] = [
@@ -63,7 +62,7 @@ export function RoadmapsSection() {
   );
 
   return (
-    <section id="roadmaps" className="relative py-24 sm:py-32">
+    <section id="roadmaps" className="reveal relative py-24 sm:py-32">
       {/* Backdrop */}
       <div className="bg-dots pointer-events-none absolute inset-0 opacity-20 [mask-image:radial-gradient(ellipse_at_top,black_20%,transparent_70%)]" />
 
@@ -109,22 +108,16 @@ export function RoadmapsSection() {
 
           {/* Custom roadmap card */}
           <div
-            className="animate-fade-up group relative overflow-hidden rounded-2xl border border-dashed border-[#0dcfcf]/40 bg-gradient-to-br from-[#0dcfcf]/10 via-white/5 to-transparent p-6 transition-all hover:border-[#0dcfcf]/70"
+            className="animate-fade-up group relative overflow-hidden rounded-2xl border border-dashed border-[rgba(13, 207, 207,0.25)] bg-[rgba(13, 207, 207,0.08)] p-8 transition-all hover:bg-[rgba(13, 207, 207,0.12)] flex flex-col items-center justify-center text-center cursor-pointer"
             style={{ animationDelay: `${visible.length * 50}ms` }}
           >
-            <div className="relative flex h-full flex-col">
-              <div className="grid size-12 place-items-center rounded-xl border border-[#0dcfcf]/50 bg-black text-[#0dcfcf]">
-                <Plus className="size-5" />
-              </div>
-              <h3 className="mt-5 text-lg font-semibold text-white">{t("roads.custom.title")}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-white/70">{t("roads.custom.desc")}</p>
-              <div className="mt-auto pt-6">
-                <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#0dcfcf]">
-                  {t("roads.custom.cta")}
-                  <Arrow className="size-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
-                </span>
-              </div>
+            <div className="size-12 rounded-xl border border-[rgba(13, 207, 207,0.25)] bg-black text-[#0dcfcf] grid place-items-center mb-5 group-hover:scale-110 transition-transform">
+              <Plus className="size-6" />
             </div>
+            <h3 className="text-lg font-bold text-white mb-2">مسار مخصص</h3>
+            <p className="text-sm text-white/40 leading-relaxed max-w-[200px]">
+              تحدّث مع Satory AI لبناء خارطة طريق فريدة تناسبك
+            </p>
           </div>
         </div>
       </div>
@@ -146,7 +139,7 @@ function RoadmapCard({
 
   return (
     <div
-      className="animate-fade-up group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[#0dcfcf]/60 hover:shadow-[0_20px_50px_-15px_#0dcfcf30]"
+      className="animate-fade-up group relative overflow-hidden rounded-2xl border border-white/5 bg-[#111418] p-8 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(13, 207, 207,0.3)] hover:shadow-[0_20px_50px_-15px_rgba(13, 207, 207,0.15)]"
       style={{ animationDelay: `${delay}ms` }}
     >
       {/* hover glow */}
@@ -157,7 +150,7 @@ function RoadmapCard({
 
       <div className="relative flex flex-col">
         <div className="flex items-start justify-between">
-          <div className="grid size-12 place-items-center rounded-xl border border-[#0dcfcf]/30 bg-black text-[#0dcfcf] transition-all group-hover:border-[#0dcfcf]/70 group-hover:shadow-[0_0_24px_#0dcfcf40]">
+          <div className="grid size-12 place-items-center rounded-xl border border-[rgba(13, 207, 207,0.25)] bg-black text-[#0dcfcf] transition-all group-hover:border-[rgba(13, 207, 207,0.5)] group-hover:shadow-[0_0_24px_rgba(13, 207, 207,0.3)]">
             <Icon className="size-5" />
           </div>
           {domain.verified && (
@@ -177,18 +170,18 @@ function RoadmapCard({
         <div className="mt-5 flex items-center gap-4 font-mono text-[11px] text-white/40">
           <span className="inline-flex items-center gap-1.5">
             <Beaker className="size-3 text-[#0dcfcf]/80" />
-            {domain.stations} {t("roads.stations")}
+            {domain.stations} محطة
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span className="size-1 rounded-full bg-[#0dcfcf]/60" />
-            {domain.resources} {t("roads.resources")}
+            {domain.resources} مورد
           </span>
         </div>
 
         {/* progress placeholder */}
-        <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-white/5">
+        <div className="mt-4 h-1 w-full overflow-hidden rounded-full bg-white/5">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-[#0dcfcf] to-[#20e3e3]"
+            className="h-full rounded-full bg-gradient-to-r from-[#0dcfcf] to-[#00b8b8]"
             style={{ width: `${Math.min(95, 25 + domain.stations * 3)}%` }}
           />
         </div>
@@ -197,15 +190,16 @@ function RoadmapCard({
           <p className="mt-3 text-[11px] text-white/40">{t("roads.verified")}</p>
         )}
 
-        <div className="mt-6 flex items-center justify-between border-t border-white/5 pt-4">
-          <span className="text-sm font-semibold text-white/90 transition-colors group-hover:text-[#0dcfcf]">
+        <div className="mt-6 flex items-center justify-between border-t border-white/5 pt-5">
+          <span className="text-[13px] font-bold text-white/90 transition-colors group-hover:text-[#0dcfcf]">
             {t("roads.explore")}
           </span>
-          <span className="grid size-8 place-items-center rounded-full border border-white/10 text-white/70 transition-all group-hover:border-[#0dcfcf]/70 group-hover:bg-[#0dcfcf]/15 group-hover:text-[#0dcfcf]">
-            <Arrow className="size-3.5" />
+          <span className="grid size-9 place-items-center rounded-full border border-white/10 text-white/70 transition-all group-hover:border-[rgba(13, 207, 207,0.5)] group-hover:bg-[rgba(13, 207, 207,0.1)] group-hover:text-[#0dcfcf]">
+            <Arrow className="size-4" />
           </span>
         </div>
       </div>
     </div>
   );
 }
+

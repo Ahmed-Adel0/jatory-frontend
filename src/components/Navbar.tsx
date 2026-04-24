@@ -7,11 +7,19 @@ import { useI18n } from "@/lib/i18n";
 import { LanguageToggle } from "./LanguageToggle";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useAuthModal } from "@/features/auth/auth-modal";
+import { useRouter } from "next/navigation";
+
+import { brandAssets } from "./brand/brand-assets";
 
 export function Navbar() {
   const { t } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const authModal = useAuthModal();
+  const router = useRouter();
+
+  const openLogin = () => router.push("/home");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -21,11 +29,10 @@ export function Navbar() {
   }, []);
 
   const links = [
-    { key: "nav.home", href: "/" },
-    { key: "nav.roadmaps", href: "#roadmaps" },
-    { key: "nav.satory", href: "#" },
-    { key: "nav.opportunities", href: "#" },
-    { key: "nav.community", href: "#" },
+    { key: "المميزات", href: "#features" },
+    { key: "المسارات", href: "#roadmaps" },
+    { key: "Satory AI", href: "#satory" },
+    { key: "الأرقام", href: "#numbers" },
   ];
 
   return (
@@ -37,14 +44,18 @@ export function Navbar() {
           : "border-b border-transparent bg-transparent",
       )}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="group flex items-center gap-2.5">
-          <span className="relative grid size-9 place-items-center overflow-hidden rounded-lg bg-black ring-1 ring-white/10 transition-all group-hover:ring-[#0dcfcf]/60">
-            <Image src="/logo.png" alt="Jatory" width={36} height={36} className="size-full object-cover" />
-            <span className="pointer-events-none absolute inset-0 rounded-lg shadow-[inset_0_0_12px_#0dcfcf40] opacity-0 transition-opacity group-hover:opacity-100" />
-          </span>
-          <span className="text-lg font-semibold tracking-tight text-white">
+          <div className="relative size-10 overflow-hidden rounded-xl border border-white/10">
+            <Image
+              src={brandAssets.icon}
+              alt="Jatory"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <span className="text-xl font-bold tracking-tight text-white font-heading">
             Jatory
           </span>
         </Link>
@@ -55,9 +66,9 @@ export function Navbar() {
             <Link
               key={l.key}
               href={l.href}
-              className="rounded-md px-3 py-1.5 text-sm text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+              className="rounded-md px-3 py-1.5 text-[13px] font-medium text-white/60 transition-colors hover:bg-white/5 hover:text-white"
             >
-              {t(l.key)}
+              {l.key}
             </Link>
           ))}
         </nav>
@@ -67,12 +78,30 @@ export function Navbar() {
           <div className="hidden sm:block">
             <LanguageToggle />
           </div>
-          <button className="hidden rounded-md px-3 py-1.5 text-sm text-white/80 transition-colors hover:text-white md:inline-flex">
+          <button
+            onClick={openLogin}
+            className="hidden rounded-md px-3 py-1.5 text-[13px] font-medium text-white/60 transition-colors hover:text-white md:inline-flex"
+            type="button"
+          >
             {t("nav.signin")}
           </button>
-          <button className="group relative hidden overflow-hidden rounded-md bg-[#0dcfcf] px-4 py-2 text-sm font-semibold text-black shadow-[0_0_24px_#0dcfcf50] transition-all hover:shadow-[0_0_36px_#0dcfcf70] sm:inline-flex">
+          <button
+            onClick={openLogin}
+            className="group relative hidden items-center gap-2 overflow-hidden rounded-lg bg-primary px-5 py-2 text-[13px] font-bold text-primary-foreground shadow-[0_0_24px_rgba(13,207,207,0.3)] transition-all hover:bg-primary/90 hover:shadow-[0_0_36px_rgba(13,207,207,0.5)] transform hover:-translate-y-0.5 sm:inline-flex"
+            type="button"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-3.5 h-3.5"
+            >
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
             <span className="relative z-10">{t("nav.cta")}</span>
-            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
           </button>
           <button
             className="grid size-9 place-items-center rounded-md border border-white/10 text-white md:hidden"
@@ -100,7 +129,11 @@ export function Navbar() {
             ))}
             <div className="mt-2 flex items-center justify-between border-t border-white/10 pt-3">
               <LanguageToggle />
-              <button className="rounded-md bg-[#0dcfcf] px-4 py-2 text-sm font-semibold text-black">
+              <button
+                onClick={openLogin}
+                type="button"
+                className="rounded-md bg-[#0dcfcf] px-4 py-2 text-sm font-semibold text-black"
+              >
                 {t("nav.cta")}
               </button>
             </div>

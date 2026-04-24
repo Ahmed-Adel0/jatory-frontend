@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Lock, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 import { BrandMark } from "@/components/brand/brand-mark";
 import { Button } from "@/components/ui/button";
@@ -89,6 +90,7 @@ function AuthModal({
   reason?: string;
 }) {
   const { login } = useAuth();
+  const router = useRouter();
 
   const title = "باقي خطوة واحدة عشان تمتلك مسارك العلمي";
   const desc =
@@ -108,9 +110,6 @@ function AuthModal({
 
           <div className="relative p-6">
             <div className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-2xl border border-primary/25 bg-primary/10">
-                <BrandMark variant="icon" className="scale-[0.8]" />
-              </span>
               <div className="flex-1">
                 <DialogHeader>
                   <DialogTitle className="text-lg font-black">
@@ -129,6 +128,7 @@ function AuthModal({
                 onClick={() => {
                   login("google");
                   onOpenChange(false);
+                  router.push("/home");
                 }}
               >
                 <span className="grid size-7 place-items-center rounded-lg bg-white/10">
@@ -143,6 +143,7 @@ function AuthModal({
                 onClick={() => {
                   login("linkedin");
                   onOpenChange(false);
+                  router.push("/home");
                 }}
               >
                 <span className="grid size-7 place-items-center rounded-lg bg-white/10">
@@ -152,16 +153,6 @@ function AuthModal({
               </Button>
             </div>
 
-            <div className="mt-5 flex items-center justify-between rounded-xl border border-white/10 bg-background/40 p-4 text-sm">
-              <div className="flex items-center gap-2 text-white/70">
-                <Lock className="size-4 text-primary" />
-                التصفح كضيف
-              </div>
-              <div className="flex items-center gap-2 text-white/60">
-                <Sparkles className="size-4 text-[hsl(var(--brand-cyan))]" />
-                يُفعّل حفظ المسار + XP
-              </div>
-            </div>
           </div>
         </motion.div>
       </DialogContent>

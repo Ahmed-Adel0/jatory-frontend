@@ -48,7 +48,6 @@ export default function RootLayout({
           <AuthProvider>
             <AuthModalProvider>
               {children}
-              <Footer />
             </AuthModalProvider>
           </AuthProvider>
         </I18nProvider>
