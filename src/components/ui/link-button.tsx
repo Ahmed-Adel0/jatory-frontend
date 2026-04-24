@@ -6,16 +6,7 @@ import * as React from "react";
 import { buttonVariants } from "./button";
 import { cn } from "@/lib/utils";
 
-type ButtonVariant = "default" | "outline" | "secondary" | "ghost" | "destructive" | "link";
-type ButtonSize =
-  | "default"
-  | "xs"
-  | "sm"
-  | "lg"
-  | "icon"
-  | "icon-xs"
-  | "icon-sm"
-  | "icon-lg";
+import { type VariantProps } from "class-variance-authority";
 
 export function LinkButton({
   href,
@@ -25,7 +16,7 @@ export function LinkButton({
   ...props
 }: LinkProps &
   React.AnchorHTMLAttributes<HTMLAnchorElement> &
-  { variant?: ButtonVariant; size?: ButtonSize }) {
+  VariantProps<typeof buttonVariants>) {
   return (
     <Link
       href={href}
