@@ -7,7 +7,6 @@ import { DashboardPreview } from "@/components/DashboardPreview";
 import { HowItWorks } from "@/components/HowItWorks";
 import { FeaturesGrid } from "@/components/FeaturesGrid";
 import { RoadmapsSection } from "@/components/RoadmapsSection";
-import { SatoryChat } from "@/components/SatoryChat";
 import { Numbers } from "@/components/Numbers";
 import { Testimonials } from "@/components/Testimonials";
 import { CTA } from "@/components/CTA";
