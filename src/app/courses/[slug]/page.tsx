@@ -174,13 +174,13 @@ export default function CoursePage() {
                   <X className="h-4 w-4 text-muted-foreground" />
                 </button>
                 <div className="flex items-center gap-2">
-                  <span className="font-heading font-bold text-sm">Satory</span>
+                  <span className="font-heading font-bold text-sm">Jatory</span>
                   <Brain className="h-5 w-5 text-primary" />
                 </div>
               </div>
               <div className="p-4 h-64 overflow-auto">
                 <div className="glass-card rounded-xl p-3 mb-3">
-                  <p className="text-sm">أهلاً! 👋 أنا ساتوري، مساعدك الذكي. اسألني أي سؤال عن الدرس الحالي</p>
+                  <p className="text-sm">أهلاً! 👋 أنا جاتوري، مساعدك الذكي. اسألني أي سؤال عن الدرس الحالي</p>
                 </div>
                 <div className="space-y-2">
                   {["لخصلي الدرس", "اشرحلي الاحتكاك", "اديني أسئلة"].map((s, i) => (
@@ -196,7 +196,7 @@ export default function CoursePage() {
                     <MessageCircle className="h-4 w-4" />
                   </Button>
                   <input
-                    placeholder="اسأل Satory..."
+                    placeholder="اسأل Jatory..."
                     className="flex-1 h-9 bg-secondary/50 rounded-lg px-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground text-right"
                   />
                 </div>

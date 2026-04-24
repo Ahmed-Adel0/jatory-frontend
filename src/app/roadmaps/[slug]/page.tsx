@@ -9,8 +9,8 @@ import {
 } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
-import { SiteFooter } from "@/components/layout/site-footer";
-import { SiteHeader } from "@/components/layout/site-header";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LinkButton } from "@/components/ui/link-button";
@@ -136,7 +136,7 @@ export default async function CareerRoadmapPage({
 
   return (
     <div className="min-h-dvh">
-      <SiteHeader />
+      <Navbar />
 
       <main>
         <Container className="py-10 sm:py-14">
@@ -204,7 +204,7 @@ export default async function CareerRoadmapPage({
         </Container>
       </main>
 
-      <SiteFooter />
+      <Footer />
     </div>
   );
 }
