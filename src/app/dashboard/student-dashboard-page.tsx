@@ -13,8 +13,8 @@ import {
 import { motion } from "framer-motion";
 
 import { Container } from "@/components/layout/container";
-import { SiteFooter } from "@/components/layout/site-footer";
-import { SiteHeader } from "@/components/layout/site-header";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { LinkButton } from "@/components/ui/link-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -65,7 +65,7 @@ export default function StudentDashboardPage() {
 
   return (
     <div className="min-h-dvh">
-      <SiteHeader />
+      <Navbar />
 
       <main>
         <Container className="py-10 sm:py-14">
@@ -176,6 +176,7 @@ export default function StudentDashboardPage() {
                     </div>
                   </div>
                   <div className="text-left">
+                    <span className="font-heading font-bold text-sm">Jatory</span>
                     <div className="text-2xl font-bold text-primary">
                       {currentRoadmap.progress}%
                     </div>
@@ -370,7 +371,7 @@ export default function StudentDashboardPage() {
         </Container>
       </main>
 
-      <SiteFooter />
+      <Footer />
     </div>
   );
 }
