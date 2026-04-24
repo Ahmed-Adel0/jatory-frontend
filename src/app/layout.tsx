@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   description:
     "منصة Jatory تحوّل رحلتك الأكاديمية لنظام ذكي يوجهك يوم بيوم — من أول يوم جامعة لحد ما توصل لهدفك",
   icons: {
-    icon: "/logoicon.jpeg"
-  }
+    icon: "/logoicon.jpeg",
+  },
 };
 
 export default function RootLayout({
