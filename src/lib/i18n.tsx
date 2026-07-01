@@ -151,40 +151,7 @@ const dicts: Record<Lang, Dict> = { ar, en };
 
 type Ctx = { lang: Lang; dir: "rtl" | "ltr"; t: (k: string) => string; setLang: (l: Lang) => void; toggle: () => void };
 
-const I18nContext = createContext<Ctx | null>(null);
 
-export function I18nProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("ar");
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const saved = window.localStorage.getItem("jatory.lang") as Lang | null;
-    if (saved === "ar" || saved === "en") setLangState(saved);
-  }, []);
 
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    const dir = lang === "ar" ? "rtl" : "ltr";
-    document.documentElement.lang = lang;
-    document.documentElement.dir = dir;
-    document.documentElement.classList.add("dark");
-    try {
-      window.localStorage.setItem("jatory.lang", lang);
-    } catch {
-      // ignore
-    }
-  }, [lang]);
 
-  const setLang = (l: Lang) => setLangState(l);
-  const toggle = () => setLangState((l) => (l === "ar" ? "en" : "ar"));
-  const t = (k: string) => dicts[lang][k] ?? k;
-  const dir = lang === "ar" ? "rtl" : "ltr";
-
-  return <I18nContext.Provider value={{ lang, dir, t, setLang, toggle }}>{children}</I18nContext.Provider>;
-}
-
-export function useI18n() {
-  const ctx = useContext(I18nContext);
-  if (!ctx) throw new Error("useI18n must be used within I18nProvider");
-  return ctx;
-}

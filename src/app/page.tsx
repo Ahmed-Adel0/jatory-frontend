@@ -1,55 +1,38 @@
 "use client";
 
-import React from "react";
-import dynamic from "next/dynamic";
-import { Navbar } from "@/components/Navbar";
-import { Hero } from "@/components/Hero";
-import { Footer } from "@/components/Footer";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { Navbar } from "@/shared/layout/Navbar";
+import { Hero } from "@/features/home/components/Hero";
+import { Footer } from "@/shared/layout/Footer";
 
-const HowItWorks = dynamic(() => import("@/components/HowItWorks").then(mod => mod.HowItWorks));
-const FeaturesGrid = dynamic(() => import("@/components/FeaturesGrid").then(mod => mod.FeaturesGrid));
-const RoadmapsSection = dynamic(() => import("@/components/RoadmapsSection").then(mod => mod.RoadmapsSection));
-const Numbers = dynamic(() => import("@/components/Numbers").then(mod => mod.Numbers));
-const Testimonials = dynamic(() => import("@/components/Testimonials").then(mod => mod.Testimonials));
-const CTA = dynamic(() => import("@/components/CTA").then(mod => mod.CTA));
+// Use static imports for landing page performance (reduces LCP layout shifts and js loading overhead)
+import { AboutUs } from "@/features/home/components/AboutUs";
+import { WhatWeOffer } from "@/features/home/components/WhatWeOffer";
+import { WhyJatory } from "@/features/home/components/WhyJatory";
+import { TeamsOfExperts } from "@/features/home/components/TeamsOfExperts";
+import { JoinOurNetwork } from "@/features/home/components/JoinOurNetwork";
 
 export default function MainInterface() {
   useEffect(() => {
+    // Simple intersection observer for reveal animations
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
+            // Optional: unobserve after revealing if you only want it to animate once
+            observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.05, rootMargin: "0px 0px -10% 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
     );
 
-    const observeElements = () => {
-      document.querySelectorAll(".reveal").forEach((el) => {
-        if (!el.classList.contains("observed")) {
-          el.classList.add("observed");
-          observer.observe(el);
-        }
-      });
-    };
-
-    observeElements();
-
-    const mutationObserver = new MutationObserver(() => {
-      observeElements();
-    });
-
-    mutationObserver.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
+    const elements = document.querySelectorAll(".reveal");
+    elements.forEach((el) => observer.observe(el));
 
     return () => {
       observer.disconnect();
-      mutationObserver.disconnect();
     };
   }, []);
 
@@ -59,19 +42,16 @@ export default function MainInterface() {
       
       <Hero />
 
+      <AboutUs />
 
-      <HowItWorks />
+      <WhatWeOffer />
 
-      <FeaturesGrid />
+      <WhyJatory />
 
-      <RoadmapsSection />
+      <TeamsOfExperts />
 
-
-      <Numbers />
-
-      <Testimonials />
-
-      <CTA />
+      <JoinOurNetwork />
+      
       <Footer />
     </main>
   );

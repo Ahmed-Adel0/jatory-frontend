@@ -3,8 +3,7 @@ import { Cairo, Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/features/auth/auth-context";
 import { AuthModalProvider } from "@/features/auth/auth-modal";
-import { I18nProvider } from "@/lib/i18n";
-import { Footer } from "@/components/Footer";
+import { Footer } from "@/shared/layout/Footer";
 
 const cairo = Cairo({
   variable: "--font-heading",
@@ -44,13 +43,11 @@ export default function RootLayout({
       <body
         className={`${cairo.variable} ${inter.variable} ${geistMono.variable} antialiased selection:bg-primary/30`}
       >
-        <I18nProvider>
           <AuthProvider>
             <AuthModalProvider>
               {children}
             </AuthModalProvider>
           </AuthProvider>
-        </I18nProvider>
       </body>
     </html>
   );
