@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
@@ -38,7 +38,7 @@ export function JoinOurNetwork() {
         <div className="flex-1 w-full relative">
           <div className="aspect-[4/3] rounded-2xl overflow-hidden relative border border-white/10 shadow-2xl">
             <Image
-              src="/mentor.jpeg" // Using the reference image from public if available
+              src="/join-network-generated.png"
               alt="Join Jatory Network"
               fill
               className="object-cover transition-transform duration-700 hover:scale-105"

@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import Image from "next/image";
 import { Target, Eye } from "lucide-react";
 
@@ -52,7 +52,7 @@ export function AboutUs() {
           <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-900 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
           <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10">
             <Image
-              src="/about.jpeg"
+              src="/about-jatory-generated.png"
               alt="About Jatory"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105 grayscale hover:grayscale-0"

@@ -4,21 +4,45 @@ import Image from "next/image";
 const teamMembers = [
   {
     id: 1,
-    name: "Ahmed Adel",
-    title: "Executive Co-Founder",
-    image: "/team.jpeg", // Placeholder image from public folder
+    name: "Khaled Mohamed",
+    title: "Founder & CEO",
+    image: "/team-khaled-mohamed-avatar.png",
   },
   {
     id: 2,
-    name: "Industry Leader",
-    title: "Executive Co-Founder",
-    image: "/team.jpeg",
+    name: "Nawal Ibrahim",
+    title: "Co-Founder",
+    image: "/team-nawal-ibrahim.jpeg",
   },
   {
     id: 3,
-    name: "Top Professor",
-    title: "Chief Production Officer",
-    image: "/team.jpeg",
+    name: "Abd El-Rahman Fathy",
+    title: "Art Design",
+    image: "/team-abd-el-rahman-fathy.jpeg",
+  },
+  {
+    id: 4,
+    name: "Mohamed Mekkawy",
+    title: "PR",
+    image: "/team-mohamed-mekkawy.jpeg",
+  },
+  {
+    id: 5,
+    name: "Eman Hagi",
+    title: "PR",
+    image: "/team-eman-hagi.jpeg",
+  },
+  {
+    id: 6,
+    name: "Mohamed Shata",
+    title: "Video Editor",
+    image: "/team-mohamed-shata.jpeg",
+  },
+  {
+    id: 7,
+    name: "Ahmed El Nahas",
+    title: "CTO",
+    image: "/team-ahmed-el-nahas-avatar.png",
   },
 ];
 

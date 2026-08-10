@@ -9,7 +9,7 @@ export function Hero() {
   const router = useRouter();
 
   const handlePrimaryAction = () => {
-    router.push("#offer");
+    router.push("/courses");
   };
 
   return (

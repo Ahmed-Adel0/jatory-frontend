@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Navbar } from "@/shared/layout/Navbar";
 import { 
   Play, 
@@ -123,26 +124,28 @@ export default function HomeDashboard() {
                   whileHover={{ y: -5 }}
                   className="min-w-[280px] sm:min-w-[320px] snap-start"
                 >
-                  <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 group cursor-pointer">
-                    <Image 
-                      src={item.image} 
-                      alt={item.title} 
-                      fill 
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
-                    <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold">
-                      {item.duration}
-                    </div>
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="size-12 rounded-full bg-primary/90 flex items-center justify-center shadow-[0_0_20px_rgba(13,207,207,0.4)]">
-                        <Play className="size-6 text-black fill-current" />
+                  <Link href={`/course/${item.id}`} className="block">
+                    <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 group cursor-pointer">
+                      <Image 
+                        src={item.image} 
+                        alt={item.title} 
+                        fill 
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
+                      <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold">
+                        {item.duration}
+                      </div>
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="size-12 rounded-full bg-primary/90 flex items-center justify-center shadow-[0_0_20px_rgba(13,207,207,0.4)]">
+                          <Play className="size-6 text-black fill-current" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <h3 className="mt-3 font-semibold text-white/90 truncate">{item.title}</h3>
-                  <div className="mt-1 h-[1px] w-full bg-white/5" />
-                  <div className="mt-1 h-[1px] w-2/3 bg-white/5" />
+                    <h3 className="mt-3 font-semibold text-white/90 truncate">{item.title}</h3>
+                    <div className="mt-1 h-[1px] w-full bg-white/5" />
+                    <div className="mt-1 h-[1px] w-2/3 bg-white/5" />
+                  </Link>
                 </motion.div>
               ))}
             </div>
